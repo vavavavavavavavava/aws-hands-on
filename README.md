@@ -6,6 +6,7 @@
 ## 研修で扱うサービス
 
 - AWS Amplify Hosting
+- AWS Identity and Access Management (IAM)
 - Amazon Cognito
 - Amazon API Gateway (REST)
 - AWS Lambda
@@ -29,8 +30,9 @@
 1. [本ページ（研修概要）](./README.md)
 2. [事前準備: AWSアカウント作成](./docs/setup-aws-account.md)
 3. [事前準備: Gitインストール（Windows）](./docs/setup-git-windows.md)
-4. [構成を先に把握する](./docs/architecture.md)
-5. [本編ハンズオンを実施する](./docs/handson-board.md)
+4. [研修導入: 全体像と登場サービスの役割](./docs/overview-and-roles.md)
+5. [構成を先に把握する](./docs/architecture.md)
+6. [本編ハンズオンを実施する](./docs/handson-board.md)
 
 ## 研修で到達する状態
 

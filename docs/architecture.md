@@ -1,6 +1,6 @@
 # 構成概要（簡単な掲示板）
 
-- 前の資料: [README](../README.md)
+- 前の資料: [研修導入（全体像と役割）](./overview-and-roles.md)
 - 次に読む資料: [ハンズオン本編](./handson-board.md)
 
 ## アーキテクチャ
