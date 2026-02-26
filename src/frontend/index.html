@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS Hands-on Board</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://unpkg.com/aws-amplify@5.3.12/dist/aws-amplify.min.js"></script>
+  <script src="./aws-exports.js"></script>
+</head>
+<body>
+  <main class="container">
+    <section class="auth">
+      <h1>簡単な掲示板</h1>
+      <p class="note">Cognito でログインし、API Gateway 経由で投稿を操作します。</p>
+
+      <div class="row">
+        <input id="email" type="email" placeholder="メールアドレス" />
+        <input id="password" type="password" placeholder="パスワード" />
+      </div>
+      <div class="row">
+        <button id="signupBtn">サインアップ</button>
+        <button id="signinBtn">ログイン</button>
+        <button id="signoutBtn">ログアウト</button>
+      </div>
+
+      <div class="row">
+        <input id="code" type="text" placeholder="確認コード" />
+        <button id="confirmBtn">登録確認</button>
+      </div>
+
+      <div id="authStatus" class="status"></div>
+    </section>
+
+    <section class="post-form">
+      <h2>投稿作成</h2>
+      <input id="title" type="text" placeholder="タイトル" />
+      <textarea id="content" placeholder="本文"></textarea>
+      <button id="createBtn">投稿する</button>
+    </section>
+
+    <section class="posts">
+      <div class="row between">
+        <h2>投稿一覧</h2>
+        <button id="reloadBtn">再読み込み</button>
+      </div>
+      <ul id="postList"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

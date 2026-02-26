@@ -1,0 +1,9 @@
+{
+  "name": "board-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Simple board frontend for Amplify hosting",
+  "scripts": {
+    "start": "npx http-server . -p 4173"
+  }
+}
