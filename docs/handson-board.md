@@ -29,23 +29,26 @@
    4. ルートユーザーのパスワードを入力してサインインする
    5. MFA を求められたら、認証アプリを開いて確認コードを入力する
 2. コンソール検索で `IAM` を開く
-3. 左メニュー `Users` -> `Create user`
-4. User name: `handson-user`
-5. `Provide user access to the AWS Management Console` を有効化
-6. `I want to create an IAM user` を選択（表示される場合）
-7. Console password は `Custom password` を選び、任意の初期パスワードを設定
-8. `Next`
-9. `Set permissions` で `Attach policies directly` を選択
-10. 学習用アカウントの場合は `AdministratorAccess` を選択
-11. `Next` -> `Create user`
-12. 作成完了画面で `Console sign-in URL` を控える
+3. 左メニュー `ユーザー` -> `ユーザーを作成`
+4. ユーザー名: `handson-user`
+5. `AWS マネジメントコンソールへのユーザーアクセスを提供する` を有効化
+6. コンソールパスワードは `自動生成されたパスワード` のままにする。`ユーザーは次回のサインイン時に新しいパスワードを作成する必要があります - 推奨` は、パスワード変更をしたい場合はチェックを入れ、そのまま進めたい場合はチェックを外す
+7. `次へ`
+8. `アクセス許可を設定` で `ポリシーを直接アタッチする` を選択
+9. 学習用アカウントの場合は `AdministratorAccess` を選択
+10. `次へ` -> `ユーザーを作成`
+11. 作成完了画面で `.csv ファイルをダウンロード` を押して保存する
+12. ダウンロードした `.csv` にサインイン URL と初期パスワードが含まれていることを確認する
 
 ### 1-3. IAM ハンズオンユーザーで再ログイン
 
 1. ルートユーザーからサインアウト
-2. 手順 1-2 で控えた `Console sign-in URL` を開く
-3. `handson-user` とパスワードでログイン
-4. 画面右上のリージョンを選択（例: `Asia Pacific (Tokyo)`）
+   1. 画面右上のアカウント名を押す
+   2. `サインアウト` を押す
+2. 手順 1-2 で保存した `.csv` を開き、サインイン URL を開く
+3. `.csv` に記載されたユーザー名と初期パスワードでログイン
+4. パスワード変更を求められた場合だけ、その場で任意のパスワードに変更する
+5. 画面右上のリージョンを選択（例: `Asia Pacific (Tokyo)`）
 
 ### 1-4. ローカル作業フォルダを開く
 
@@ -56,41 +59,41 @@
 ## 2. DynamoDB テーブル作成
 
 1. AWS コンソール上部の検索で `DynamoDB` と入力して開く
-2. 左メニュー `Tables` を開く
-3. `Create table` を押す
+2. 左メニュー `テーブル` を開く
+3. `テーブルを作成` を押す
 4. 以下を入力
 
-- Table name: `BoardPosts`
-- Partition key: `postId`
-- Key type: `String`
+- テーブル名: `BoardPosts`
+- パーティションキー: `postId`
+- キータイプ: `文字列`
 
-1. `Table settings` は `Default settings` のまま
-2. `Create table` を押す
+1. `テーブル設定` は `デフォルト設定` のまま
+2. `テーブルを作成` を押す
 3. 作成後、対象テーブルを開く
-4. `Indexes` タブを開く
-5. `Create index` を押す
+4. `インデックス` タブを開く
+5. `インデックスを作成` を押す
 6. 以下を入力
 
-- Partition key: `boardId`（String）
-- Sort key: `createdAt`（String）
-- Index name: `gsi1`（自動入力される場合はそのまま）
+- パーティションキー: `boardId`（文字列）
+- ソートキー: `createdAt`（文字列）
+- インデックス名: `gsi1`（自動入力される場合はそのまま）
 
-1. `Create index` を押す
+1. `インデックスを作成` を押す
 
 ## 3. Cognito User Pool 作成
 
 1. AWS コンソール検索で `Cognito` を開く
-2. `User pools` を開き `Create user pool` を押す
-3. `Application type` は `Traditional web application` を選択
-4. `Sign-in options` は `Email` を選択
-5. `Password policy` は既定値のまま
-6. `Multi-factor authentication` は `No MFA`（学習用）
-7. `User account recovery` は既定値
-8. `Create user directory`（または `Create user pool`）を押す
+2. `ユーザープール` を開き `ユーザープールを作成` を押す
+3. `アプリケーションタイプ` は `従来のウェブアプリケーション` を選択
+4. `サインインオプション` は `メール` を選択
+5. `パスワードポリシー` は既定値のまま
+6. `多要素認証` は `MFA なし`（学習用）
+7. `ユーザーアカウントの復旧` は既定値
+8. `ユーザーディレクトリを作成`（または `ユーザープールを作成`）を押す
 9. 作成した User Pool の詳細画面で次を控える
 
 - `User pool ID`
-- `App integration` タブ内の `App client ID`
+- `アプリケーション統合` タブ内の `アプリクライアント ID`
 
 ## 4. IAM ロール作成 + Lambda 関数 3 本作成
 
@@ -99,16 +102,16 @@
 ### 4-1. IAM で専用ロールを作成
 
 1. AWS コンソール検索で `IAM` を開く
-2. 左メニュー `Roles` -> `Create role`
-3. `Trusted entity type` は `AWS service`
-4. `Use case` は `Lambda`
-5. `Next`
-6. `Permissions policies` で `AWSLambdaBasicExecutionRole` にチェック
-7. `Next`
-8. Role name: `board-lambda-exec-role`
-9. `Create role`
+2. 左メニュー `ロール` -> `ロールを作成`
+3. `信頼されたエンティティタイプ` は `AWS のサービス`
+4. `ユースケース` は `Lambda`
+5. `次へ`
+6. `許可ポリシー` で `AWSLambdaBasicExecutionRole` にチェック
+7. `次へ`
+8. ロール名: `board-lambda-exec-role`
+9. `ロールを作成`
 10. 作成した `board-lambda-exec-role` を開く
-11. `Add permissions` -> `Create inline policy`
+11. `アクセス許可を追加` -> `インラインポリシーを作成`
 12. `JSON` タブに以下を貼り付け
 
 ```json
@@ -133,40 +136,40 @@
 ```
 
 1. `<AWSアカウントID>` を実値に置換
-2. `Next`
-3. Policy name: `BoardPostsAccessPolicy`
-4. `Create policy`
+2. `次へ`
+3. ポリシー名: `BoardPostsAccessPolicy`
+4. `ポリシーを作成`
 
 ### 4-2. Lambda 作成の共通手順（既存ロールを使う）
 
 1. AWS コンソール検索で `Lambda` を開く
-2. `Functions` -> `Create function`
-3. `Author from scratch` を選択
+2. `関数` -> `関数の作成`
+3. `一から作成` を選択
 4. 入力
 
-- Function name: 章ごとの名前を入力
-- Runtime: `Node.js 20.x`
-- Architecture: `x86_64`（既定値）
+- 関数名: 章ごとの名前を入力
+- ランタイム: `Node.js 20.x`
+- アーキテクチャ: `x86_64`（既定値）
 
-1. `Permissions` で `Change default execution role` を開く
-2. `Use an existing role` を選択
+1. `アクセス権限` で `デフォルトの実行ロールの変更` を開く
+2. `既存のロールを使用する` を選択
 3. 既存ロールに `board-lambda-exec-role` を選択
-4. `Create function` を押す
-5. 関数画面の `Code` タブで `index.mjs` を開く
+4. `関数の作成` を押す
+5. 関数画面の `コード` タブで `index.mjs` を開く
 6. 本資料のコードを全文貼り付け
-7. 右上 `Deploy` を押す
-8. `Configuration` タブ -> `Environment variables` -> `Edit`
-9. `Add environment variable`
+7. 右上 `デプロイ` を押す
+8. `設定` タブ -> `環境変数` -> `編集`
+9. `環境変数を追加`
 
 - Key: `TABLE_NAME`
 - Value: `BoardPosts`
 
-1. `Save` を押す
+1. `保存` を押す
 
 ### 4-3. 関数1 `board-list-posts`
 
-- Function name: `board-list-posts`
-- `index.mjs` に以下を貼り付けて `Deploy`
+- 関数名: `board-list-posts`
+- `index.mjs` に以下を貼り付けて `デプロイ`
 
 ```js
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -210,8 +213,8 @@ export const handler = async (event) => {
 
 ### 4-4. 関数2 `board-create-post`
 
-- Function name: `board-create-post`
-- `index.mjs` に以下を貼り付けて `Deploy`
+- 関数名: `board-create-post`
+- `index.mjs` に以下を貼り付けて `デプロイ`
 
 ```js
 import { randomUUID } from "node:crypto";
@@ -270,8 +273,8 @@ export const handler = async (event) => {
 
 ### 4-5. 関数3 `board-delete-post`
 
-- Function name: `board-delete-post`
-- `index.mjs` に以下を貼り付けて `Deploy`
+- 関数名: `board-delete-post`
+- `index.mjs` に以下を貼り付けて `デプロイ`
 
 ```js
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -317,8 +320,8 @@ export const handler = async (event) => {
 ### 4-6. 既存ロールで作成できているか確認
 
 1. Lambda の `board-list-posts` を開く
-2. `Configuration` -> `Permissions` を開く
-3. `Execution role` が `board-lambda-exec-role` であることを確認
+2. `設定` -> `アクセス権限` を開く
+3. `実行ロール` が `board-lambda-exec-role` であることを確認
 4. 同様に `board-create-post` / `board-delete-post` でも確認
 
 ## 5. API Gateway（REST API）作成
@@ -326,35 +329,35 @@ export const handler = async (event) => {
 ### 5-1. API 作成
 
 1. AWS コンソール検索で `API Gateway` を開く
-2. `APIs` -> `Create API`
-3. `REST API` の `Build` を押す
-4. `New API` を選択し以下を入力
+2. `API` -> `API を作成`
+3. `REST API` の `構築` を押す
+4. `新しい API` を選択し以下を入力
 
-- API name: `board-api`
-- Endpoint Type: `Regional`
+- API 名: `board-api`
+- エンドポイントタイプ: `リージョナル`
 
-1. `Create API`
+1. `API を作成`
 
 ### 5-2. リソース作成
 
 1. 左ツリーで `/` を選択
-2. `Actions` -> `Create Resource`
-3. Resource Name: `posts`
-4. Resource Path: `/posts`
-5. `Create Resource`
-6. `/posts` を選択 -> `Actions` -> `Create Resource`
-7. Resource Name: `postById`
-8. Resource Path: `/{postId}`
-9. `Create Resource`
+2. `アクション` -> `リソースの作成`
+3. リソース名: `posts`
+4. リソースパス: `/posts`
+5. `リソースの作成`
+6. `/posts` を選択 -> `アクション` -> `リソースの作成`
+7. リソース名: `postById`
+8. リソースパス: `/{postId}`
+9. `リソースの作成`
 
 ### 5-3. メソッド作成（Lambda 連携）
 
-1. `/posts` を選択 -> `Actions` -> `Create Method` -> `GET`
-2. Integration type: `Lambda Function`
-3. `Use Lambda Proxy integration` を ON
-4. Lambda Region を選択
-5. Lambda Function: `board-list-posts`
-6. `Save` -> `OK`
+1. `/posts` を選択 -> `アクション` -> `メソッドの作成` -> `GET`
+2. 統合タイプ: `Lambda 関数`
+3. `Lambda プロキシ統合の使用` を ON
+4. Lambda リージョンを選択
+5. Lambda 関数: `board-list-posts`
+6. `保存` -> `OK`
 
 同様に `/posts` に `POST` を作成し、Lambda を `board-create-post` に設定。
 
@@ -362,40 +365,40 @@ export const handler = async (event) => {
 
 ### 5-4. Cognito Authorizer 作成
 
-1. 左メニュー `Authorizers` -> `Create New Authorizer`
-2. Name: `board-cognito-auth`
-3. Type: `Cognito`
-4. Cognito User Pool: 手順 3 で作成した User Pool
-5. Token source: `Authorization`
-6. `Create`
+1. 左メニュー `オーソライザー` -> `新しいオーソライザーを作成`
+2. 名前: `board-cognito-auth`
+3. タイプ: `Cognito`
+4. Cognito ユーザープール: 手順 3 で作成したユーザープール
+5. トークンソース: `Authorization`
+6. `作成`
 
 ### 5-5. 各メソッドへ Authorizer 適用
 
 対象: `GET /posts`, `POST /posts`, `DELETE /posts/{postId}`。
 
 1. 対象メソッドをクリック
-2. `Method Request` を開く
+2. `メソッドリクエスト` を開く
 3. `Authorization` の鉛筆アイコンで `board-cognito-auth` を選択
 4. `✓` で保存
 
 ### 5-6. CORS 設定
 
 1. `/posts` を選択
-2. `Actions` -> `Enable CORS`
+2. `アクション` -> `CORS を有効化`
 3. Access-Control-Allow-Origin: `*`
 4. Access-Control-Allow-Headers: `Content-Type,Authorization`
 5. Access-Control-Allow-Methods: `GET,POST,OPTIONS`
-6. `Enable CORS and replace existing CORS headers`
+6. `CORS を有効化して既存の CORS ヘッダーを置き換える`
 
 同様に `/{postId}` でも CORS を有効化し、Methods は `DELETE,OPTIONS`。
 
 ### 5-7. デプロイ
 
-1. `Actions` -> `Deploy API`
-2. Deployment stage: `New Stage`
-3. Stage name: `dev`
-4. `Deploy`
-5. `Invoke URL` を控える（例: `https://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev`）
+1. `アクション` -> `API のデプロイ`
+2. デプロイステージ: `新しいステージ`
+3. ステージ名: `dev`
+4. `デプロイ`
+5. `呼び出し URL` を控える（例: `https://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev`）
 
 ## 6. フロントエンド設定（ローカルファイル編集）
 
@@ -427,21 +430,21 @@ window.awsConfig = {
 ### 7-1. CodeCommit リポジトリ作成（ブラウザ）
 
 1. AWS コンソール検索で `CodeCommit` を開く
-2. `Repositories` -> `Create repository`
-3. Repository name: `aws-hands-on-board`
-4. `Create`
-5. 右上 `Clone URL` の `HTTPS` を控える
+2. `リポジトリ` -> `リポジトリを作成`
+3. リポジトリ名: `aws-hands-on-board`
+4. `作成`
+5. 右上 `クローン URL` の `HTTPS` を控える
 6. 例: `https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/aws-hands-on-board`
 
 ### 7-2. IAM ユーザーの Git credentials（HTTPS）を発行
 
 1. AWS コンソールで `IAM` を開く
-2. `Users` -> `handson-user` を開く
-3. `Security credentials` タブを開く
-4. `HTTPS Git credentials for AWS CodeCommit` セクションの `Generate credentials` を押す
-5. 表示された `Git username` と `Git password` を安全な場所に控える
+2. `ユーザー` -> `handson-user` を開く
+3. `セキュリティ認証情報` タブを開く
+4. `AWS CodeCommit 用 HTTPS Git 認証情報` セクションの `認証情報を生成` を押す
+5. 表示された `Git ユーザー名` と `Git パスワード` を安全な場所に控える
 
-注記: この教材では、CodeCommit への Git 操作はこの `Git username / Git password` を使います（AWS CLI は使いません）。
+注記: この教材では、CodeCommit への Git 操作はこの `Git ユーザー名 / Git パスワード` を使います（AWS CLI は使いません）。
 
 ### 7-3. ローカルから push
 
@@ -473,19 +476,19 @@ git remote set-url origin https://git-codecommit.ap-northeast-1.amazonaws.com/v1
 
 `git push` 時に認証入力が求められたら、手順 7-2 で発行した以下を入力します。
 
-- Username: `Git username`
-- Password: `Git password`
+- Username: `Git ユーザー名`
+- Password: `Git パスワード`
 
 ## 8. Amplify Hosting で公開
 
 1. AWS コンソール検索で `Amplify` を開く
-2. `New app` -> `Host web app`
-3. Source code provider: `AWS CodeCommit`
-4. Repository: `aws-hands-on-board`
-5. Branch: `main`
-6. App build settings で `Build image settings` は既定値
-7. `App root` に `src/frontend` を設定（UI上で指定できる場合）
-8. `Next` -> `Save and deploy`
+2. `新しいアプリ` -> `ウェブアプリをホスト`
+3. ソースコードプロバイダー: `AWS CodeCommit`
+4. リポジトリ: `aws-hands-on-board`
+5. ブランチ: `main`
+6. アプリのビルド設定で `ビルドイメージ設定` は既定値
+7. `アプリルート` に `src/frontend` を設定（UI 上で指定できる場合）
+8. `次へ` -> `保存してデプロイ`
 
 デプロイ完了後、表示された URL にアクセスします。
 
@@ -539,13 +542,13 @@ git remote set-url origin https://git-codecommit.ap-northeast-1.amazonaws.com/v1
 
 ### 12-3. 削除手順（推奨順）
 
-1. Amplify を開き、対象アプリを選択して `Delete app`
-2. API Gateway を開き、`board-api` を選択して `Delete API`
-3. Lambda を開き、3つの関数をそれぞれ `Delete`
-4. DynamoDB を開き、`BoardPosts` テーブルを `Delete`
-5. Cognito を開き、対象 User Pool を `Delete`
+1. Amplify を開き、対象アプリを選択して `アプリを削除`
+2. API Gateway を開き、`board-api` を選択して `API を削除`
+3. Lambda を開き、3つの関数をそれぞれ `削除`
+4. DynamoDB を開き、`BoardPosts` テーブルを `削除`
+5. Cognito を開き、対象ユーザープールを `削除`
 6. IAM を開き、`board-lambda-exec-role` のインラインポリシーを削除後、ロールを削除
-7. CodeCommit を開き、対象リポジトリを `Delete`
+7. CodeCommit を開き、対象リポジトリを `削除`
 
 ### 12-4. 削除しないもの
 
